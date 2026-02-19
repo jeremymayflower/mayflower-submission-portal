@@ -292,32 +292,12 @@ function ConfirmationScreen() {
 
       <p className="text-sm text-text-secondary mb-6">
         Questions? Contact us at{' '}
-        <a href="mailto:submissions@mayflowerspecialty.com" className="text-gold font-medium hover:underline">
-          submissions@mayflowerspecialty.com
+        <a href="mailto:submission@mayflowerspecialty.com" className="text-gold font-medium hover:underline">
+          submission@mayflowerspecialty.com
         </a>
       </p>
 
-      {scoreResponse && (
-        <button
-          onClick={() => {
-            import('./lib/generatePdf').then(({ generateScorecard }) => {
-              generateScorecard({
-                companyInfo: useStore.getState().companyInfo as any,
-                profile: useStore.getState().profile,
-                uploadedDocs: useStore.getState().uploadedDocs.map(d => ({
-                  docType: d.docType,
-                  filename: d.filename,
-                })),
-                signingInfo: useStore.getState().signingInfo,
-                score: scoreResponse,
-              });
-            });
-          }}
-          className="bg-navy text-white px-6 py-3 rounded-lg font-medium text-sm hover:bg-navy-600 transition-colors"
-        >
-          Download Decision Scorecard (PDF)
-        </button>
-      )}
+      {/* Scorecard PDF is generated server-side and emailed to underwriter only */}
 
       <p className="text-[11px] text-muted mt-6">
         Submission does not guarantee coverage.
