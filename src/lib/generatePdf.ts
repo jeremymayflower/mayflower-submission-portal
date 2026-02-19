@@ -144,7 +144,7 @@ export function generateScorecard(data: PdfData): void {
   doc.setFontSize(7);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(...TEXT_MUTED);
-  doc.text('AI Liability Underwriting — Decision Scorecard', mx, y + 9);
+  doc.text('AI Liability Underwriting - Decision Scorecard', mx, y + 9);
 
   doc.setFontSize(6.5);
   doc.text(`Ref: ${refId}  |  ${dateStr}  |  CONFIDENTIAL`, pw - mx, y + 4, { align: 'right' });
@@ -195,7 +195,7 @@ export function generateScorecard(data: PdfData): void {
   doc.setTextColor(...dec.color);
   doc.setFontSize(9);
   doc.setFont('helvetica', 'bold');
-  doc.text(`✓  ${dec.label}`, cx, badgeY + 6.5, { align: 'center' });
+  doc.text(dec.label, cx, badgeY + 6.5, { align: 'center' });
 
   // Decision Path Summary
   const dpY = badgeY + 16;
@@ -241,9 +241,10 @@ export function generateScorecard(data: PdfData): void {
 
   let bY = dpY + 12;
   reasons.slice(0, 5).forEach(r => {
+    // Draw green filled circle as bullet
+    doc.setFillColor(...SUCCESS);
+    doc.circle(mx + 13, bY - 1, 1.2, 'F');
     doc.setTextColor(...SUCCESS);
-    doc.setFontSize(8);
-    doc.text('✓', mx + 12, bY);
     doc.setFontSize(7);
     doc.text(r, mx + 17, bY);
     bY += 5;
@@ -258,14 +259,14 @@ export function generateScorecard(data: PdfData): void {
     doc.setTextColor(...WARNING);
     doc.setFontSize(8);
     doc.setFont('helvetica', 'bold');
-    doc.text('⚠  Flags for Monitoring', mx + 10, bY + 2);
+    doc.text('Flags for Monitoring', mx + 10, bY + 2);
     bY += 7;
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(6.5);
     doc.setTextColor(...TEXT_MUTED);
     weakSections.forEach(s => {
-      doc.text(`•  ${s.section_name} (${s.percentage.toFixed(0)}%) — recommend review`, mx + 12, bY);
+      doc.text(`-  ${s.section_name} (${s.percentage.toFixed(0)}%) - recommend review`, mx + 12, bY);
       bY += 4;
     });
 
@@ -275,7 +276,7 @@ export function generateScorecard(data: PdfData): void {
       n.toLowerCase().includes('recommend')
     );
     flagNotes.slice(0, 2).forEach(n => {
-      const txt = doc.splitTextToSize(`•  ${n}`, leftW - 28);
+      const txt = doc.splitTextToSize(`-  ${n}`, leftW - 28);
       doc.text(txt[0], mx + 12, bY);
       bY += 4;
     });
@@ -292,7 +293,7 @@ export function generateScorecard(data: PdfData): void {
   doc.setTextColor(...TEAL);
   doc.setFontSize(8.5);
   doc.setFont('helvetica', 'bold');
-  doc.text('📊  Score Breakdown', rightX + 7, y + 8);
+  doc.text('Score Breakdown', rightX + 7, y + 8);
 
   let sbY = y + 15;
   sections.forEach(s => {
@@ -323,7 +324,7 @@ export function generateScorecard(data: PdfData): void {
   doc.setTextColor(...TEAL);
   doc.setFontSize(8.5);
   doc.setFont('helvetica', 'bold');
-  doc.text('⚙  Factor Multipliers', rightX + 7, ucY + 8);
+  doc.text('Factor Multipliers', rightX + 7, ucY + 8);
 
   doc.setTextColor(...TEXT_MUTED);
   doc.setFontSize(5.5);
@@ -399,7 +400,7 @@ export function generateScorecard(data: PdfData): void {
   doc.text('MAYFLOWER SPECIALTY', mx, 7);
   doc.setTextColor(...TEXT_MUTED);
   doc.setFontSize(6);
-  doc.text(`${refId}  —  Detailed Analysis  —  ${data.companyInfo.organization_name}`, pw - mx, 7, { align: 'right' });
+  doc.text(`${refId}  -  Detailed Analysis  -  ${data.companyInfo.organization_name}`, pw - mx, 7, { align: 'right' });
 
   y = 14;
 
@@ -444,7 +445,7 @@ export function generateScorecard(data: PdfData): void {
     doc.setTextColor(...WHITE);
     doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
-    doc.text('Factor Multipliers — Full Detail', mx, y + 3);
+    doc.text('Factor Multipliers - Full Detail', mx, y + 3);
     y += 7;
 
     autoTable(doc, {
@@ -522,7 +523,7 @@ export function generateScorecard(data: PdfData): void {
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(...TEXT_MUTED);
     data.score.notes.forEach(n => {
-      const lines = doc.splitTextToSize(`•  ${n}`, cw - 18);
+      const lines = doc.splitTextToSize(`-  ${n}`, cw - 18);
       doc.text(lines[0], mx + 6, ny);
       ny += 4.5;
     });
@@ -540,7 +541,7 @@ export function generateScorecard(data: PdfData): void {
     doc.setFontSize(7);
     doc.setFont('helvetica', 'normal');
     data.score.decline_reasons.forEach(r => {
-      doc.text(`•  ${r}`, mx + 8, dy);
+      doc.text(`-  ${r}`, mx + 8, dy);
       dy += 5;
     });
     y = dy + 4;
@@ -560,8 +561,8 @@ export function generateScorecard(data: PdfData): void {
     doc.setFontSize(6.5);
     doc.setFont('helvetica', 'normal');
     data.uploadedDocs.forEach(d => {
-      doc.setTextColor(...TEAL);
-      doc.text('●', mx + 6, dy2);
+      doc.setFillColor(...TEAL);
+      doc.circle(mx + 7.5, dy2 - 1, 0.8, 'F');
       doc.setTextColor(...TEXT_LIGHT);
       doc.text(`${d.docType}: `, mx + 10, dy2);
       doc.setTextColor(...TEXT_MUTED);
@@ -592,7 +593,7 @@ export function generateScorecard(data: PdfData): void {
     doc.rect(0, ph - 9, pw, 9, 'F');
     doc.setTextColor(...TEXT_MUTED);
     doc.setFontSize(5.5);
-    doc.text('Mayflower Specialty — Confidential Underwriting Document — Not for Distribution', mx, ph - 3.5);
+    doc.text('Mayflower Specialty - Confidential Underwriting Document - Not for Distribution', mx, ph - 3.5);
     doc.text(`Page ${i} of ${pages}`, pw - mx, ph - 3.5, { align: 'right' });
   }
 
